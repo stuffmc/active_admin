@@ -48,6 +48,25 @@ describe "Breadcrumbs" do
         trail[1][:path].should == "/admin/posts"
       end
     end
+    
+    context "when path '/admin/posts/1/edit'" do
+      let(:path) { "/admin/posts/1/edit" }
+      it "should have 4 items" do
+        trail.size.should == 4
+      end
+      it "should have a link to /admin" do
+        trail[0][:name].should == "Admin"
+        trail[0][:path].should == "/admin"
+      end
+      it "should have a link to /admin/posts" do
+        trail[1][:name].should == "Posts"
+        trail[1][:path].should == "/admin/posts"
+      end
+      it "should have a link to /admin/posts/1/edit" do
+        trail[3][:name].should == "Edit"
+        trail[3][:path].should == "/admin/posts/1/edit"
+      end
+    end
 
     context "when path '/admin/posts/1/comments'" do
       let(:path) { "/admin/posts/1/comments" }
