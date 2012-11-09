@@ -22,7 +22,20 @@ module ActiveAdmin
           
           name ||= I18n.t("activerecord.models.#{part.singularize}", :count => 1.1, :default => part.titlecase)
 
-          crumbs << link_to( name, "/" + parts[0..index].join('/'))
+          url =  "/" + parts[0..index].join('/')
+          
+          found = false
+          Rails.application.routes.routes.named_routes.values.each do |r|
+            if r.path.spec
+              route_path = r.path.spec.to_s
+              route_path.sub!("(.:format)","")
+              route_path.sub!(":id", params[:id]) if params[:id].present?
+              found = route_path == url && r.verb==/^GET$/
+              break if found
+            end
+          end
+          
+          crumbs << ( found ? link_to(name, url) : name )
         end
         crumbs
       end
